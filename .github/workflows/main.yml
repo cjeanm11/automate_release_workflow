@@ -28,10 +28,6 @@ jobs:
         title: ${{ steps.semvers.outputs.patch }}
       env:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      run: |
-        # Do some work to generate a value
-        next_milestone= ${{ steps.semvers.outputs.patch }}
-        echo "::set-output name=next_milestone::$next_milestone"
     - name: Create and push the new tag
       env:
         NEXT_MILESTONE_TAG: ${{ steps.createmilestone.outputs.next_milestone }}
