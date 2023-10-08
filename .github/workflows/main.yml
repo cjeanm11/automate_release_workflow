@@ -10,18 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-
-    - name: Get next version
+    - name: Version Increment
       uses: reecetech/version-increment@2023.9.3
-      id: version
-      with:
-        scheme: semver
-        increment: patch
-    - name: Build image
-      uses: docker/build-push-action@v2
-      with:
-        push: false
-        tags: "release/release-v0.0.0:${{ steps.version.outputs.version }}"
-        context: .
     - name: Release
       uses: softprops/action-gh-release@v1
