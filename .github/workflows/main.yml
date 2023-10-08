@@ -35,4 +35,4 @@ jobs:
         echo "version new release: v${{ steps.semvers.outputs.patch }}"
     - name: Release
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
+      if: startsWith(github.ref, 'refs/tags/v')
