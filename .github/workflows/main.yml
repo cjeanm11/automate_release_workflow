@@ -3,7 +3,7 @@ name: Generate tag and release
 on:
   push:
     branches:
-      - $GITHUB_HEAD_REF  # Replace 'main' with your desired branch
+      - certif-prod  # Replace 'main' with your desired branch
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -31,8 +31,8 @@ jobs:
       - name: Create and push the new tag
         run: |
           git tag v${{ steps.semvers.outputs.patch }} 
-          git push --tag origin $GITHUB_HEAD_REF v${{ steps.semvers.outputs.patch }} 
-          echo "version new release on $GITHUB_HEAD_REF: v${{ steps.semvers.outputs.patch }}"
+          git push --tag origin certif-prod v${{ steps.semvers.outputs.patch }} 
+          echo "version new release on certif-prod: v${{ steps.semvers.outputs.patch }}"
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
