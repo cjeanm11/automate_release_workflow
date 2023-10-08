@@ -2,7 +2,7 @@ name: Generate
 on:
   push:
     branches:
-      - main  # Replace 'main' with your desired branch
+      - origin/certif-prod  # Replace 'main' with your desired branch
 
 jobs:
   generate:
@@ -30,7 +30,7 @@ jobs:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
     - name: Create and push the new tag
       run: |
-        git tag v${{ steps.semvers.outputs.patch }}
+        git tag v${{ steps.semvers.outputs.patch }} origin/certif-prod
         echo "version new release: v${{ steps.semvers.outputs.patch }}"
     - name: Release
       uses: softprops/action-gh-release@v1
