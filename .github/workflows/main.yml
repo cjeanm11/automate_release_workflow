@@ -18,7 +18,7 @@ jobs:
         run: |
           latest_tag=$(git describe --tags --always $(git rev-list --tags --max-count=1))
           echo "Latest tag: $latest_tag"
-          echo "::set-output name=latest_tag::$latest_tag"
+          echo "::debug::$latest_tag"
       - name: Increment the tag version
         id: increment-tag
         run: |
@@ -28,12 +28,16 @@ jobs:
           minor="${version_parts[1]}"
           patch="${version_parts[2]}"
           
+          echo "::debug::${version_parts[0]}"
+          echo "::debug::${version_parts[1]}"
+          echo "::debug::${version_parts[2]}"
+          
           # Increment the patch version
           patch=$((patch + 1))
           
           # Create the new tag
           new_tag="${major}.${minor}.${patch}"
-          echo "::set-output name=new_tag::$new_tag"
+          echo "::debug::$new_tag"
 
       - name: Create and push the new tag
         run: |
