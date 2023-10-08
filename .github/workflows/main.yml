@@ -16,15 +16,15 @@ jobs:
       - name: Get the latest tag
         id: get-tag
         run: |
-          latest_tag=$(git describe --tags --always $(git rev-list --tags --max-count=1)) 
+          latest_tag=$(git describe --tags --always $(git rev-list --tags --max-count=1))
+          echo "Latest tag: $latest_tag"
           echo "::set-output name=latest_tag::$latest_tag"
-
       - name: Increment the tag version
         id: increment-tag
         run: |
           # Extract the major, minor, and patch components from the latest tag
           IFS='.' read -r -a version_parts <<< "${{ steps.get-tag.outputs.latest_tag }}"
-          major="${version_parts[0]}"
+          major="${version_parts[0]}" 
           minor="${version_parts[1]}"
           patch="${version_parts[2]}"
           
