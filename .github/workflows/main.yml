@@ -2,7 +2,7 @@ name: Generate
 on:
   push:
     branches:
-      - origin/certif-prod  # Replace 'main' with your desired branch
+      - certif-prod  # Replace 'main' with your desired branch
 
 jobs:
   generate:
@@ -31,7 +31,7 @@ jobs:
     - name: Create and push the new tag
       run: |
         git tag v${{ steps.semvers.outputs.patch }} 
-        git push origin/certif-prod v${{ steps.semvers.outputs.patch }} 
+        git push --tag origin certif-prod v${{ steps.semvers.outputs.patch }} 
         echo "version new release: v${{ steps.semvers.outputs.patch }}"
     - name: Release
       uses: softprops/action-gh-release@v1
