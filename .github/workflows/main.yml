@@ -29,9 +29,7 @@ jobs:
       env:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
     - name: Create and push the new tag
-      env:
-        NEXT_MILESTONE_TAG: ${{ steps.createmilestone.outputs.next_milestone }}
       run: |
-        git tag $NEXT_MILESTONE_TAG
-        git push origin $NEXT_MILESTONE_TAG
-        echo "version new release: $NEXT_MILESTONE_TAG"
+        git tag ${{ steps.semvers.outputs.patch }}
+        git push origin ${{ steps.semvers.outputs.patch }}
+        echo "version new release: ${{ steps.semvers.outputs.patch }}
