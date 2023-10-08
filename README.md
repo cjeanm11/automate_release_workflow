@@ -1,7 +1,5 @@
 # Automate Release Workflow
 
-This repository simplifies and automates the release process for your software projects by handling release tasks.
-
 ## Key Tasks
 
 - **Generate Branch Tags**: Automatically create tags for a specified branch (e.g., `certif-prod`) when a commit is made on that branch, signifying changes to the application's release version.
@@ -16,7 +14,7 @@ This repository simplifies and automates the release process for your software p
 
 ## Permissions
 
-This Action requires the following permissions on the GitHub integration token:
+This Action requires the following permissions on the [GitHub token permissions](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token):
 
 permissions:
 
@@ -28,6 +26,3 @@ permissions:
 
     contents: write
     discussions: write
-  
-[GitHub token permissions](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token) can be set for an individual job, workflow, or for Actions as a whole.
-
