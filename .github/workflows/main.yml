@@ -32,4 +32,4 @@ jobs:
       run: |
         git tag ${{ steps.semvers.outputs.patch }}
         git push origin ${{ steps.semvers.outputs.patch }}
-        echo "version new release: ${{ steps.semvers.outputs.patch }}
+        echo "version new release: ${{ steps.semvers.outputs.patch }}"
