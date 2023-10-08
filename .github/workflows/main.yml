@@ -1,20 +1,41 @@
-
-
-name: Main
+name: Auto Increment Tag
 
 on:
   push:
     branches:
-      - realease-v0.0.0
+      - main  # Replace 'main' with your desired branch
+
 jobs:
-  version:
+  auto-increment-tag:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      - run: git config user.name "$GITHUB_ACTOR"
-      - run: npm version minor -m "v%s"
-      - run: VERSION=$(node -p "require('./package.json').version")
-      - run: git tag ${VERSION}
-      - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
-      - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get the latest tag
+        id: get-tag
+        run: |
+          latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
+          echo "::set-output name=latest_tag::$latest_tag"
+
+      - name: Increment the tag version
+        id: increment-tag
+        run: |
+          # Extract the major, minor, and patch components from the latest tag
+          IFS='.' read -r -a version_parts <<< "${{ steps.get-tag.outputs.latest_tag }}"
+          major="${version_parts[0]}"
+          minor="${version_parts[1]}"
+          patch="${version_parts[2]}"
+          
+          # Increment the patch version
+          patch=$((patch + 1))
+          
+          # Create the new tag
+          new_tag="${major}.${minor}.${patch}"
+          echo "::set-output name=new_tag::$new_tag"
+
+      - name: Create and push the new tag
+        run: |
+          git tag ${{ steps.increment-tag.outputs.new_tag }}
+          git push origin ${{ steps.increment-tag.outputs.new_tag }}
