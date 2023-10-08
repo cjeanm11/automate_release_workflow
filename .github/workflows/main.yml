@@ -1,38 +1,43 @@
-name: Generate
+name: Generate tag and release
+
 on:
   push:
     branches:
-      - main  # Replace 'main' with your desired branch
-
+      - $GITHUB_HEAD_REF  # Replace 'main' with your desired branch
 jobs:
   generate:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-    - name: 'Get Previous tag'
-      id: previoustag
-      uses: "WyriHaximus/github-action-get-previous-tag@v1"
-      with:
-        fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
-    - name: 'Get next minor version'
-      id: semvers
-      uses: "WyriHaximus/github-action-next-semvers@v1"
-      with:
-        version: ${{ steps.previoustag.outputs.tag }}
-    - name: 'Create new milestone'
-      id: createmilestone
-      uses: "WyriHaximus/github-action-create-milestone@v1"
-      with:
-        title: ${{ steps.semvers.outputs.patch }}
-      env:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-    - name: Create and push the new tag
-      run: |
-        git tag v${{ steps.semvers.outputs.patch }}
-        echo "version new release: v${{ steps.semvers.outputs.patch }}"
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: v${{ steps.semvers.outputs.patch }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+      - name: 'Get next minor version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+      - name: 'Create new milestone'
+        id: createmilestone
+        uses: "WyriHaximus/github-action-create-milestone@v1"
+        with:
+          title: ${{ steps.semvers.outputs.patch }}
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Create and push the new tag
+        run: |
+          git tag v${{ steps.semvers.outputs.patch }} 
+          git push --tag origin $GITHUB_HEAD_REF v${{ steps.semvers.outputs.patch }} 
+          echo "version new release on $GITHUB_HEAD_REF: v${{ steps.semvers.outputs.patch }}"
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.semvers.outputs.patch }}
+
+
+
+
